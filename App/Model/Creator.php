@@ -1,0 +1,15 @@
+<?php
+
+namespace App\Model;
+
+abstract class Creator
+{
+    protected abstract function factoryMethod();
+
+    public function startFactory()
+    {
+        $mfg= $this->factoryMethod();
+        return $mfg;
+    }
+
+}
