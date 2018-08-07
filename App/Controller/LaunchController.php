@@ -2,76 +2,80 @@
 
 namespace App\Controller;
 
-use App\Model\Character;
-use App\Model\Logger;
-use \App\Model\Time;
+use App\Factory\CharacterFactory;
+use App\Serializer\CharacterSerializer;
 
 class LaunchController
 {
 
-//    public function test()
-//    {
-//
-//        $time = new Time();
-//        $time->calculateTime(0);
-//
-//        $logger = new Logger();
-////        echo $logger->monitore();
-//
-//        return ['controller'];
-//    }
+    public function launch()
+    {
+        $characters = $this->createCharacters();
+        $logs = [];
+        $character = [];
 
+        for ($i = 0;  $i < count($characters); $i++) {
+
+            //convert character object into array
+            $serializer = new CharacterSerializer();
+            $character = $serializer->serialize($characters[$i]);
+
+            array_push($logs, $character);
+        }
+
+        $this->displayLogs($logs);
+    }
 
     /**
      * @param array $logs
      */
     public function displayLogs(array $logs)
     {
-        foreach($logs as $log) {
-            print $log.' ';
-        }
+        header('Content-Type: application/json');
+        echo json_encode($logs);
 
     }
-
-//    /**
-//     * @param $characters
-//     * @return array
-//     */
-//    public function displayCharacters($characters) :array
-//    {
-//        $logs = $characters;
-//        return $logs;
-//    }
 
     /**
      * @return array
      */
     public function createCharacters() :array
     {
+
+        $factory = new CharacterFactory();
         $characters = [];
 
-        $characters[0]= 'Okita';
-        $characters[1]= 'Atalaire';
+        for ($i = 0;  $i < 100; $i++) {
+            array_push($characters, $factory->startFactory());
+        }
 
         return $characters;
     }
 
-    public function launch()
-    {
-        $this->displayLogs($this->createCharacters());
-    }
-
-    public function createRoutine()
-    {
-        //une routine = une suite d'action réalisée par un personnage
-    }
-
-    public function displayRoutine(Character $character)
-    {
-        //retourne la Routine d'un personnage
-        //en fait, on affiche pas de logs mais des routines de personnages...?
-        // un générateur de routine
-    }
-
+//    /**
+//     * @param $character
+//     * @return array
+//     */
+//    public function createRoutines($character) //pour un personnage
+//    {
+//        $routines = [];
+//        for ($i = 0;  $i < 2; $i++)
+//        {
+//            $routine =  $this->act($character);
+//            array_push($routines, $routine);
+//        }
+//        //une routine = une suite d'action réalisée par un personnage
+//
+//        return $routines;
+//    }
+//
+//    /**
+//     * @param $character
+//     * @return string
+//     */
+//    public function act($character)
+//    {
+//        return 'Une action est commise par '.$character.'. ';
+//    }
 
 }
