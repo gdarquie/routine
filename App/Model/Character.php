@@ -42,7 +42,6 @@ class Character
         $this->fullName = $fullName;
     }
 
-
     /**
      * @return mixed
      */
