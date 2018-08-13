@@ -1,0 +1,6 @@
+<?php
+
+Interface InterfaceAction
+{
+    public function act($character);
+}
